@@ -10,9 +10,6 @@ app.use(express.urlencoded({
 })
 );
 
-
-
-
 const pool = new Pool({
     host: "localhost",
     user: "postgres",
@@ -34,7 +31,32 @@ app.get("/", (req, res) => {
     });
 });
 
+app.post("/", async (req, res) => {
 
+    try {
+
+        const { nama, nim, kelas } = req.body;
+
+        await pool.query(
+            "INSERT INTO biodata(nama,nim,kelas) VALUES($1,$2,$3)",
+            [nama, nim, kelas]
+        );
+
+        res.status(201).json({
+            message: "Data berhasil ditambahkan"
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+            message: "Database Error"
+        });
+
+    }
+
+});
 
 app.listen(PORT, () => {
     console.log(`App running on port http://localhost:${PORT}`);
