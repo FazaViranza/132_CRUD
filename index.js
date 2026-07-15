@@ -58,6 +58,34 @@ app.post("/", async (req, res) => {
 
 });
 
+app.put("/:id", async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+        const { nama, nim, kelas } = req.body;
+
+        await pool.query(
+            "UPDATE biodata SET nama=$1,nim=$2,kelas=$3 WHERE id=$4",
+            [nama, nim, kelas, id]
+        );
+
+        res.status(200).json({
+            message: "Data berhasil diupdate"
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+            message: "Database Error"
+        });
+
+    }
+
+});
+
 app.listen(PORT, () => {
     console.log(`App running on port http://localhost:${PORT}`);
 });
