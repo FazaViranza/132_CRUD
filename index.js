@@ -86,6 +86,33 @@ app.put("/:id", async (req, res) => {
 
 });
 
+app.delete("/:id", async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        await pool.query(
+            "DELETE FROM biodata WHERE id=$1",
+            [id]
+        );
+
+        res.status(200).json({
+            message: "Data berhasil dihapus"
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+            message: "Database Error"
+        });
+
+    }
+
+});
+
 app.listen(PORT, () => {
     console.log(`App running on port http://localhost:${PORT}`);
 });
